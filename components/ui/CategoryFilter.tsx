@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 export const categories = [
-  { label: "General", slug: "general" },
+  { label: "Top", slug: "top" },
   { label: "Technology", slug: "technology" },
   { label: "Business", slug: "business" },
   { label: "Sports", slug: "sports" },

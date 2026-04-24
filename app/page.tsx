@@ -11,7 +11,7 @@ let articles: Article[] = [];
 let error: string | null = null;
 
 try {
-  articles = await getTopHeadlines("general");
+  articles = await getTopHeadlines("top");
 } catch {
   error = "Failed to load news. Please try again later.";
 }

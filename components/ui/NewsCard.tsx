@@ -1,21 +1,24 @@
+"use client";
 import Image from "next/image";
 import { ExternalLink, Calendar, Radio } from "lucide-react";
 import { format } from "date-fns";
 import type { Article } from "@/lib/news";
-
 export default function NewsCard({ article }: { article: Article }) {
-  const formattedDate = format(new Date(article.publishedAt), "MMM dd, yyyy");
+  const formattedDate = format(new Date(article.pubDate), "MMM dd, yyyy");
 
   return (
     <article className="group flex flex-col rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-violet-300 dark:hover:border-violet-700 hover:shadow-lg hover:shadow-violet-500/10 active:scale-[0.98] transition-all duration-300">
       {/* Image */}
       <div className="relative w-full h-48 bg-slate-100 dark:bg-slate-800 overflow-hidden">
         <Image
-          src={article.urlToImage || "/fallback.jpg"}
+          src={article.image_url || "/fallback.jpg"}
           alt={article.title}
           fill
           className="object-cover group-hover:scale-105 transition-transform duration-500"
           unoptimized
+          onError={(e) => {
+            (e.target as HTMLImageElement).src = "/fallback.jpg";
+          }}
         />
       </div>
 
@@ -25,7 +28,7 @@ export default function NewsCard({ article }: { article: Article }) {
         <div className="flex items-center justify-between gap-2 text-xs text-slate-500 dark:text-slate-400">
           <span className="flex items-center gap-1">
             <Radio size={12} />
-            {article.source.name}
+            {article.source_name}
           </span>
           <span className="flex items-center gap-1">
             <Calendar size={12} />
@@ -45,7 +48,7 @@ export default function NewsCard({ article }: { article: Article }) {
 
         {/* Read More */}
         <a
-          href={article.url}
+          href={article.link}
           target="_blank"
           rel="noopener noreferrer"
           aria-label={`Read full article: ${article.title}`}

@@ -7,11 +7,14 @@ import { useState } from "react";
 export default function SearchBar() {
   const router = useRouter();
   const [query, setQuery] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!query.trim()) return;
+    if (!query.trim() || loading) return;
+    setLoading(true);
     router.push(`/search?q=${encodeURIComponent(query.trim())}`);
+    setTimeout(() => setLoading(false), 2000);
   };
 
   return (
@@ -34,9 +37,10 @@ export default function SearchBar() {
       </div>
       <button
         type="submit"
+        disabled={loading}
         aria-label="Submit search"
-        className="px-4 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 active:bg-violet-700 active:scale-95 text-white text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-950 transition-all duration-200">
-        Search
+        className="px-4 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 active:bg-violet-700 active:scale-95 text-white text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-950 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100">
+        {loading ? "Searching..." : "Search"}
       </button>
     </form>
   );
